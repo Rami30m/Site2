@@ -9,6 +9,7 @@
 
 body {
     background-color: rgb(34, 34, 34);
+    min-width: 100px;
 }
 
 .g {
@@ -34,6 +35,7 @@ textarea {
     font-size: 15px;
     min-height: 240px;
     background-color: rgb(70, 69, 69);
+    box-sizing: border-box;
 }
 
 form {
@@ -41,6 +43,7 @@ form {
     unicode-bidi: isolate;
     margin: auto;
     max-width: 600px;
+    
 }
 
 div {
@@ -59,23 +62,7 @@ label {
     
 }
 
-/* .button {
-    display: block;
-    appearance: none;
-    border: none;
-    border-radius: 7px;
-    height: 35px;
-    background-color:rgb(247, 28, 28);
-    color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    font-size: 20px;
-    width: 60%;
-    text-align: center;
-    
-    cursor: pointer;
-    outline: none !important;
-    transition: background-color .2s ease, box-shadow .2s ease;
-} */
+
 
 button {
     display: block;
@@ -94,4 +81,11 @@ button {
     outline: none !important;
     -webkit-transition: background-color .2s ease, box-shadow .2s ease;
     transition: background-color .2s ease, box-shadow .2s ease;
+}
+
+
+@media (max-width: 950px) {
+    .form {
+        padding: 48px ;
+    }
 }
