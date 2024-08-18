@@ -1,58 +1,106 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Test1</title>
-        <link rel="stylesheet" href="st.css">
-    </head>
-    
-    <body>
-         <p></p>
-        
-        <div>
-            <img src="./HUB.png ">
-        <form id="mform" action="http://localhost:5000/send_massege"  method="POST">  
-            <label>Введите текст </label>
-            <textarea name="message" placeholder="Введите предложение" required></textarea>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test1</title>
+    <link rel="stylesheet" href="st.css">
+    <style>
+        .status-message {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .status-message.loading {
+            background-color: #f0ad4e;
+            color: #fff;
+        }
+
+        .status-message.success {
+            background-color: #5cb85c;
+            color: #fff;
+        }
+
+        .status-message.error {
+            background-color: #d9534f;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img src="./HUB.png">
+        <form id="responseMessage" action="http://localhost:8000/send_message" method="POST">
+            <label>Введите текст</label>
+            <textarea id="messageInput" placeholder="Введите предложение" required></textarea>
             <button type="submit">Предложить</button>
         </form>
-        
-        </div>
-    </body>
-</html>
+
+        <!-- Элемент для отображения статуса -->
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+</body>
 
 <script>
-    document.getElementById("mform").addEventListener("submit", function(event) {
+    document.getElementById("responseMessage").addEventListener("submit", function(event) {
         event.preventDefault(); // Предотвращает стандартное поведение формы
 
-        // Сбор данных формы
-        var formData = new FormData(this);
+        // Получаем элементы
+        const messageInput = document.getElementById("messageInput");
+        const statusMessage = document.getElementById("statusMessage");
 
-        // Отправка данных через fetch
-        fetch('http://localhost:5000/send_message', {
+        // Показываем сообщение о загрузке
+        statusMessage.textContent = "Отправка...";
+        statusMessage.className = "status-message loading";
+        statusMessage.style.display = "block";
+
+        // Получаем данные из текстового поля
+        const message = messageInput.value;
+
+        // Создаем JSON объект
+        const data = { message: message };
+
+        // Отправляем данные через fetch
+        fetch('http://localhost:8000/send_message', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
-            return response.text();
+            return response.json();
         })
         .then(data => {
-            // Отображаем сообщение на текущей странице
-            document.getElementById("responseMessage").textContent = "Сообщение отправлено!";
-            this.reset(); // Сбрасываем форму
+            // Отображаем сообщение об успешной отправке
+            statusMessage.textContent = "Сообщение успешно отправлено!";
+            statusMessage.className = "status-message success";
+            messageInput.value = ""; // Очищаем текстовое поле
         })
         .catch(error => {
-            // Обработка ошибок
-            document.getElementById("responseMessage").textContent = "Ошибка отправки сообщения.";
+            // Отображаем сообщение об ошибке
+            statusMessage.textContent = "Ошибка отправки сообщения.";
+            statusMessage.className = "status-message error";
             console.error('Ошибка:', error);
+        })
+        .finally(() => {
+            // Оставляем сообщение видимым на некоторое время
+            setTimeout(() => {
+                statusMessage.style.display = "none";
+            }, 3000); // Сообщение будет скрыто через 3 секунды
         });
     });
 </script>
- 
+</html>
+
 
 
 
