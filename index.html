@@ -12,7 +12,7 @@
         
         <div>
             <img src="C:\Users\RAMIH\Desktop\Web\HUB.PNG">
-        <form id="mform" action="http://localhost:5000/send_message" method="POST">
+        <form id="mform"  method="POST">  
             <label>Введите текст </label>
             <textarea name="message" placeholder="Введите предложение" required></textarea>
             <button type="submit">Предложить</button>
@@ -23,12 +23,12 @@
 </html>
 
 <script>
-    document.getElementById('mform').addEventListener('submit', function(event) {
-    event.preventDefault(); // Предотвращаем стандартное поведение отправки формы
-    // document.getElementById('response').textContent = 'Message sent!';
-});
-
-</script>
+    document.getElementById("myForm").addEventListener("submit", function(event){
+      event.preventDefault(); // Предотвращает перемещение на другую страницу
+      // Ваш код для отправки данных через AJAX или другие действия
+      alert("Сообщение отправлено!");
+    });
+  </script>
 
  
 
