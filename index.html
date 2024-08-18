@@ -12,7 +12,7 @@
         
         <div>
             <img src="./HUB.png ">
-        <form id="mform"  method="POST">  
+        <form id="mform" action="http://localhost:5000/send_massege"  method="POST">  
             <label>Введите текст </label>
             <textarea name="message" placeholder="Введите предложение" required></textarea>
             <button type="submit">Предложить</button>
@@ -23,13 +23,35 @@
 </html>
 
 <script>
-    document.getElementById("myForm").addEventListener("submit", function(event){
-      event.preventDefault(); // Предотвращает перемещение на другую страницу
-      // Ваш код для отправки данных через AJAX или другие действия
-      alert("Сообщение отправлено!");
-    });
-  </script>
+    document.getElementById("mform").addEventListener("submit", function(event) {
+        event.preventDefault(); // Предотвращает стандартное поведение формы
 
+        // Сбор данных формы
+        var formData = new FormData(this);
+
+        // Отправка данных через fetch
+        fetch('http://localhost:5000/send_message', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.text();
+        })
+        .then(data => {
+            // Отображаем сообщение на текущей странице
+            document.getElementById("responseMessage").textContent = "Сообщение отправлено!";
+            this.reset(); // Сбрасываем форму
+        })
+        .catch(error => {
+            // Обработка ошибок
+            document.getElementById("responseMessage").textContent = "Ошибка отправки сообщения.";
+            console.error('Ошибка:', error);
+        });
+    });
+</script>
  
 
 
